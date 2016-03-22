@@ -15,7 +15,7 @@ bissue = Bitbucket + issue
 あとは出力されたzipをBitbucketにインポートするだけ!
 
 ## Demo
-![demo gif](https://github.com/ShirakawaYoshimaru/bissue/material/demo.gif)
+![demo gif](https://github.com/ShirakawaYoshimaru/bissue/raw/master/material/demo.gif)
 
 ## Requirement
 - pip
