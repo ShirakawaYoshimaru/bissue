@@ -12,7 +12,6 @@ appName = "bissue"
 extension = ".json"
 initFileName ="init"
 jsonFileName = "db-1.0"
-assignee = "appprino"
 
 def getBaseDir():
     return tempfile.gettempdir()
@@ -45,9 +44,15 @@ def save(issueList):
         json.dump(data, f, sort_keys=True, indent=4)
         f.close()
 
+def getAssignee():
+    f = open(getInitFilePath())
+    data = json.load(f)
+    assignee = data["assignee"]
+    f.close()
+    return assignee
 
-def makeMeta(assignee,kind="task"):
-    meta = {"default_assignee":assignee,
+def makeMeta(kind="task"):
+    meta = {"default_assignee":getAssignee(),
             "default_component":"null",
             "default_kind":kind,
             "default_milestone":"null",
@@ -62,7 +67,7 @@ def makeIssueJson(issueList,meta):
         data["id"] = issue["id"]
         data["title"] = issue["title"]
         data["content"] = issue["content"]
-        data["assignee"] = assignee
+        data["assignee"] = getAssignee()
         data["kind"] = "task"
         data["priority"] = "major"
         data["status"] = "new"
@@ -98,12 +103,13 @@ def cli():
 
 @cli.command()
 @click.option("--name",type=str,default="bissueProject")
-def init(name):
+@click.option("--assignee",type=str,default="")
+def init(name,assignee):
     """プロジェクトをセットアップ"""
     if os.path.exists(getProjectDir()) == False:
         os.mkdir(getProjectDir())
     f = open(getInitFilePath(),"w")
-    template = "{\"name\":\""+name+"\",\"issueList\":[]}"
+    template = "{\"name\":\""+name+"\",\"assignee\":\""+assignee+"\",\"issueList\":[]}"
     f.write(template)
     # out put
     click.echo("{appName} - [{name}] 初期化しました".format(appName=appName.encode('utf-8'),name=name.encode('utf-8')))
@@ -153,7 +159,7 @@ def delete(id):
 @cli.command()
 def convert():
     """issue情報をまとめる"""
-    meta = makeMeta("appprino")
+    meta = makeMeta()
     issueList = load()
     issueJson = makeIssueJson(issueList,meta)
     f = open(jsonFileName+extension,"w")
