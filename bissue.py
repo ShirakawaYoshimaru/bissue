@@ -40,9 +40,12 @@ def save(issueList):
     data = json.load(f)
     f.close()
     data["issueList"] = issueList
-    with open(getInitFilePath(), 'w') as f:
-        json.dump(data, f, sort_keys=True, indent=4)
-        f.close()
+    f = codecs.open(getInitFilePath(), 'w', 'utf-8')
+    json.dump(data, f, ensure_ascii=False)
+    f.close()
+    # with open(getInitFilePath(), 'w') as f:
+    #     json.dump(data, f, sort_keys=True, indent=4)
+    #     f.close()
 
 def getAssignee():
     f = open(getInitFilePath())
@@ -76,13 +79,9 @@ def makeIssueJson(issueList,meta):
         data["created_on"] = now
         issues.append(data)
 
-    issueJson = """
-        "issues":
-            {issues}
-        ,
-        "meta":{meta}
-    """.format(issues=issues,meta=meta).replace("\'","\"").replace("u\"","\"")
-    issueJson = "{" + issueJson + "}"
+    issueJson = {}
+    issueJson["issues"] = issues
+    issueJson["meta"] = meta
     return issueJson
 
 def addOneIssueData(title,content,id):
@@ -162,8 +161,8 @@ def convert():
     meta = makeMeta()
     issueList = load()
     issueJson = makeIssueJson(issueList,meta)
-    f = open(jsonFileName+extension,"w")
-    f.write(issueJson)
+    f = codecs.open(jsonFileName+extension, 'w', 'utf-8')
+    json.dump(issueJson, f, ensure_ascii=False)
     f.close()
     # zipにする
     zipfileName = getProjectNameByJson()
