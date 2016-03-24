@@ -44,34 +44,46 @@ Commands:
 
 ####1.まずはじめに初期化しましょう
 initコマンドを使用します。
+
 `$ bie init`
+
 --nameでプロジェクト名をつけることもできます。
 プロジェクト名をつけると、後に出力されるzipファイルの名前の一部として使用されます。
+
 `$ bie init --name hogeProject`
+
 また --assignee プロパティを付けることでissueに登録するassigneeを指定することができます。
 assigneeの指定はinit時にしかできないので注意しましょう。
 
 ####2.issueを登録しましょう
 addコマンドを使用します。
 最低限title情報があればaddすることができます。
+
 `$ bie add "【メイン画面】UIを組む"`
+
 titleの他にcontent(本文)やidを指定することもできます。
+
 `$ bie add --content "HeaderUIとかを組む" --id 1001 "【メイン画面】UIを組む"`
+
 といった感じです。
 なお、contentとidは指定しなくても大丈夫です。
 contentを指定しない場合、contentは空文字としてissueに登録されます。
 idを指定しない場合、最後に登録したissueのid + 1された数が指定されます。
 
 正常にaddされた際は、
+
 `success! TITLE`
+
 が表示されます。
 
 
 ####3.登録したissue情報を確認しましょう
 listコマンドを使用します。
+
 `$ bie list`
 
 こんな感じでidとtitleを確認することができます。
+
 ```lang:リザルト
  [id] - [title]
     0 - 【メイン画面】敵AIを作成
@@ -80,28 +92,36 @@ listコマンドを使用します。
 
 ####4.今何個issueを登録したか確認しましょう
 countコマンドを使用します。
+
 `$ bie count`
 
 こんな感じでcountを確認することができます。
+
 ```lang:リザルト
 2
 ```
 
 ####5.登録したissueを削除しましょう
 deleteコマンドを使用します。
+
 `$ bie delete 1`
+
 delete + id を指定することで、そのidのissueを削除してくれます。
 
 ####6.登録したissue情報をzipにしましょう
 convertコマンドを使用します
+
 `$ bie convert`
+
 これだけです。
 これで今まで登録したissue情報からjsonを作成し、そのjsonをzipにしてくれます。
 
 成功した場合、こんな感じになります。
+
 ```lang:リザルト
 maked bissueProject.zip
 ```
+
 「bissueProject.zip」の部分はinitコマンド使用時に--nameオプションでプロジェクト名を指定していた場合はそちらがzipのファイル名として使用されます。
 
 
@@ -110,23 +130,38 @@ http://qiita.com/ShirakawaYoshimaru/items/b3665ea3b66eafc0bdc5
 ここらへんを見てやってみてください。
 
 ####1~6が面倒な方へ(loadfileコマンド)
-テキストファイルからissue登録を行った後、zipにconvertしてくれるコマンドもあります。
+テキストファイルからissueのtitleおよびcontentが登録できるコマンドもあります
 loadfileコマンドです。
+
 `$ bie loadfile filePath`
+
 で使用できます。
 テキストファイルは1行に1つ登録したいissueのtitleを記述してください。
 例えば、
+
 ```lang:hoge.txt
 【メイン画面】敵AIを作成
 【メイン画面】UIの作成
 ```
+
 のようなテキストファイルをご用意ください。
+これでissue情報にtitleが登録されます。
+
+content情報も一緒に登録したい場合は、「,,」で区切ってください。「,,」以降の文字がcontentとして登録されます。
+
+```lang:hogeContent.txt
+【メイン画面】敵AIを作成,,AタイプとBタイプの敵AIを作成
+【メイン画面】UIの作成,,ヘッダーとフッターを作成
+```
+
+みたいな感じです。
 
 ####その他
 pathコマンド:issue情報を一時的に保存しているtmpファイルのパスを表示
 
 ## Install
 pipで配布しています。
+
 ```
 sudo pip install bissue
 ```
@@ -137,6 +172,7 @@ sudo pip install bissue
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)
 5. Create new Pull Request
+
 気軽にPRください
 
 ## Licence
