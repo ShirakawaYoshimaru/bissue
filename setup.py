@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='bissue',
-    version='6.0',
+    version='7.0',
     py_modules = ['bissue'],
     author = "Yoshimaru Shirakawa",
     license='MIT',
