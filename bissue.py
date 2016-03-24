@@ -175,14 +175,23 @@ def convert():
 @cli.command()
 @click.argument("filepath",type=str)
 def loadfile(filepath):
-    """テキストからissue情報を保存する"""
+    """テキストからissue情報を保存する。「,,」以降はcontent情報になる"""
     if os.path.exists(filepath) == False:
         raise click.BadParameter("no such file")
     f = codecs.open(filepath, 'r', "utf-8")
     line = f.readline().strip()
     while line:
-        click.echo(line)
-        addOneIssueData(line,"",-1)
+        split = line.split(",,")
+        title = split[0]
+        content = ""
+
+        click.echo(title)
+        #content情報があれば取得する
+        if len(split) == 2:
+            content = split[1]
+            click.echo(" => " + content)
+
+        addOneIssueData(title,content,-1)
         line = f.readline().strip()
     f.close
 
